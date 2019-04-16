@@ -3,50 +3,99 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XFBindableLayout"
              xmlns:viewmodels="clr-namespace:XFBindableLayout.ViewModels"
+             xmlns:utils="clr-namespace:XFBindableLayout.Utils"
              x:Class="XFBindableLayout.MainPage">
 
     <ContentPage.BindingContext>
         <viewmodels:MainPageViewModel />
     </ContentPage.BindingContext>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="FemaleDataTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Orientation="Horizontal"
+                                 Margin="16,6"
+                                 Spacing="12"
+                                 Grid.Row="0">
+
+                        <BoxView Color="Pink"
+                                 WidthRequest="25"
+                                 HeightRequest="25"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Name: " />
+                                    <Span Text="{Binding Name}"
+                                          FontAttributes="Bold" />
+                                    <Span Text="&#13;&#10;" />
+                                    <Span Text="Age: " />
+                                    <Span Text="{Binding Age}"
+                                          FontAttributes="Italic" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <BoxView HeightRequest="1"
+                             Color="Black"
+                             Grid.Row="1" />
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="MaleDataTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Orientation="Horizontal"                                 
+                                 Margin="16,6"
+                                 Spacing="12"
+                                 Grid.Row="0">
+
+                        <BoxView Color="LightBlue"
+                                 WidthRequest="25"
+                                 HeightRequest="25"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Name: " />
+                                    <Span Text="{Binding Name}"
+                                          FontAttributes="Bold" />
+                                    <Span Text="&#13;&#10;" />
+                                    <Span Text="Age: " />
+                                    <Span Text="{Binding Age}"
+                                          FontAttributes="Italic" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+
+                    <BoxView HeightRequest="1"
+                             Color="Black"
+                             Grid.Row="1" />
+                </Grid>
+            </DataTemplate>
+            
+            <utils:PersonDataTemplateSelector x:Key="PersonDataTemplateSelector"
+                                              FemaleDataTemplate="{StaticResource FemaleDataTemplate}"
+                                              MaleDataTemplate="{StaticResource MaleDataTemplate}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout BindableLayout.ItemsSource="{Binding Persons}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <StackLayout Orientation="Horizontal"                                 
-                                         Margin="16,6"
-                                         Spacing="12"
-                                         Grid.Row="0">
-
-                                <Label>
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="Name: " />
-                                            <Span Text="{Binding Name}"
-                                                  FontAttributes="Bold" />
-                                            <Span Text="&#13;&#10;" />
-                                            <Span Text="Age: " />
-                                            <Span Text="{Binding Age}"
-                                                  FontAttributes="Italic" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                            </StackLayout>
-
-                            <BoxView HeightRequest="1"
-                                     Color="Black"
-                                     Grid.Row="1" />
-                        </Grid>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
+            <StackLayout BindableLayout.ItemsSource="{Binding Persons}"
+                         BindableLayout.ItemTemplateSelector="{StaticResource PersonDataTemplateSelector}" />
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
